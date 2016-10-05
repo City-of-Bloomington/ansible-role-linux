@@ -1,0 +1,15 @@
+---
+ntp_servers:
+  - cob.bloomington.in.gov
+  - ntp.bloomington.in.gov
+
+ntp_restrictions:
+  - 127.0.0.1
+
+ntp_fallback_server: pool.ntp.org
+ntp_timezone: 'America/Indiana/Indianapolis'
+ntp_service_state: started
+ntp_pkg_state: present
+ntp_service_enabled: yes
+
+linux_nagios_ip: 10.20.20.27
