@@ -1,33 +1,38 @@
 ---
-- name: Install NTP 
-  apt: 
-    pkg: ntp 
-    state: '{{ ntp_pkg_state }}' 
-    update_cache: no  
-    cache_valid_time: 3600
+- name: Install NTP
+  apt:
+    pkg: ntp
+    state: present
 
-- name: Set Timezone 
+- name: Check current timezone
+  shell: grep -Fxq {{ ntp_timezone }} /etc/timezone | wc -l
+  register: current_tz
+  ignore_errors: True
+
+- name: Update local timezone
+  template: src=timezone dest=/etc/timezone
+  when: current_tz.stdout == '0'
+  notify: reconfigure tzdata
+
+- name: Set NTP timezone
   file:
     src: '/usr/share/zoneinfo/{{ ntp_timezone }}'
     dest: /etc/localtime
     state: link
-    force: yes
-    owner: root
-    group: root
-    mode: 0644
+    force: no
   notify: restart ntp
 
 - name: Setup NTP Configuration File
-  template: 
+  template:
     src: ntp.conf.j2
     dest: /etc/ntp.conf
     owner: root
     group: root
     mode: 0644
 
-- name: Configure NTP Service 
+- name: Configure NTP Service
   service:
-    name: ntp 
-    state: '{{ ntp_service_state }}'
-    enabled: '{{ ntp_service_enabled }}'
+    name: ntp
+    state: started
+    enabled: yes
 
