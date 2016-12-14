@@ -58,6 +58,9 @@
   include: nano.yml
   tags: nano
 
+- name: Install SSL Certs
+  include: ssl.yml
+
 # *2016.08.18 10:30:12
 # I'm not sure that we always want to configure automated updates...
 # decision should be based on type of service / server

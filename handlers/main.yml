@@ -1,8 +1,11 @@
 ---
-- name: restart ntp
+- name: linux_ntp_restart
   service:
     name: ntp
     state: restarted
 
-- name: reconfigure tzdata
+- name: linux_tzdata_reconfigure
   command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- name: linux_ssl_update_certs
+  command: update-ca-certificates

@@ -12,15 +12,19 @@
 - name: Update local timezone
   template: src=timezone dest=/etc/timezone
   when: current_tz.stdout == '0'
-  notify: reconfigure tzdata
+  notify: linux_tzdata_reconfigure
 
 - name: Set NTP timezone
   file:
     src: '/usr/share/zoneinfo/{{ ntp_timezone }}'
     dest: /etc/localtime
     state: link
-    force: no
-  notify: restart ntp
+    force: yes
+  register: ntp_tz
+
+- debug: msg="Schedule NTP restart"
+  notify: linux_ntp_restart
+  when: ntp_tz.changed
 
 - name: Setup NTP Configuration File
   template:
