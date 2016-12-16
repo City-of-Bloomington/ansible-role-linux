@@ -14,17 +14,14 @@
 #start with just updating the apt cache
 - name: Update apt cache
   apt: update_cache=yes
-  tags: [ apt_upgrade ]
 
 #get this so we can use it for upgrade:
 - name: Make sure aptitude is availabe for full upgrade
   apt: name=aptitude state=present
-  tags: [ apt_upgrade ]
 
 #http://docs.ansible.com/ansible/apt_module.html
 - name: Full upgrade
   apt: upgrade=full
-  tags: [ apt_upgrade ]
 
 - name: Install common packages
   apt:
@@ -44,19 +41,15 @@
 
 - name: Setup Firewall
   include: firewall.yml
-  tags: linux-firewall
 
 - name: Setup NTP
   include: ntp.yml
-  tags: ntp
 
 - name: Setup VIM
   include: vim.yml
-  tags: vim
 
 - name: Setup Nano
   include: nano.yml
-  tags: nano
 
 - name: Install SSL Certs
   include: ssl.yml
@@ -71,5 +64,3 @@
 #   - { regexp: '\"\$\{distro_id\}\:\$\{distro_codename\}-updates\"\;', line: '    "${distro_id}:${distro_codename}-updates";' }
 #   - { regexp: 'Unattended-Upgrade\:\:Remove-Unused-Dependencies',     line: 'Unattended-Upgrade::Remove-Unused-Dependencies \"true\";' }
 #   - { regexp: 'Unattended-Upgrade\:\:Automatic-Reboot \"',            line: 'Unattended-Upgrade::Automatic-Reboot \"true\";' }
-#   tags: unattended
-
