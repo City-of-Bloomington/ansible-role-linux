@@ -1,10 +1,10 @@
 - name: Configure the firewall (ssh)
   ufw: rule=allow port=ssh
 
-- name: Configure the firewall (ntp/nagios)
+- name: Configure the firewall (nrpe/nagios)
   ufw:
     rule: allow
-    port: ntp
+    port: '{{ linux_nagios_port }}'
     from_ip: '{{ linux_nagios_ip }}'
 
 - name: Enable the firewall

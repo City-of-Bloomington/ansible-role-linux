@@ -10,5 +10,6 @@ ntp_fallback_server: pool.ntp.org
 ntp_timezone: 'America/Indiana/Indianapolis'
 
 linux_nagios_ip: 10.20.20.27
+linux_nagios_port: 5666
 
 ssl_certs: []
