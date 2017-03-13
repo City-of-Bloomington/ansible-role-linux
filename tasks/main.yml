@@ -54,6 +54,12 @@
 - name: Install SSL Certs
   include: ssl.yml
 
+- name: Setup cron backup script
+  copy: src=backup dest=/etc/cron.daily/backup force=no owner=root group=root mode=0755
+
+- name: Create cron backup directory
+  file: path=/etc/cron.daily/backup.d state=directory owner=root group=root mode=0755
+
 # *2016.08.18 10:30:12
 # I'm not sure that we always want to configure automated updates...
 # decision should be based on type of service / server
