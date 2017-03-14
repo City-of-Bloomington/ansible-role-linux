@@ -7,9 +7,7 @@
     password: '!'
 
 - name: Make sure the user is a member of Staff
-  user: name={{ ansible_user|default(lookup('env', 'USER'), True) }}
-        groups=staff
-        append=yes
+  user: name={{ ansible_user|default(lookup('env', 'USER'), True) }} groups=staff append=yes
 
 # start with just updating the apt cache
 - name: Update apt cache
@@ -27,7 +25,6 @@
   apt:
     name: "{{ item }}"
     state: present
-  tags: linux-common
   with_items:
     - build-essential
     - autoconf

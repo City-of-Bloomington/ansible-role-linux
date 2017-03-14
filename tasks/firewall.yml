@@ -5,8 +5,8 @@
 - name: Configure the firewall (nrpe/nagios)
   ufw:
     rule: allow
-    port: '{{ linux_nagios_port }}'
-    from_ip: '{{ linux_nagios_ip }}'
+    port:    '{{ linux_nagios_port }}'
+    from_ip: '{{ linux_nagios_ip   }}'
 
 - name: Enable the firewall
   ufw: state=enabled policy=deny
