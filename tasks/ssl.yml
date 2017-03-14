@@ -9,3 +9,4 @@
   with_items: "{{ ssl_certs | default([]) }}"
   no_log: True
   notify: linux_ssl_update_certs
+...

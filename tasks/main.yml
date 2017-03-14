@@ -11,15 +11,15 @@
         groups=staff
         append=yes
 
-#start with just updating the apt cache
+# start with just updating the apt cache
 - name: Update apt cache
   apt: update_cache=yes
 
-#get this so we can use it for upgrade:
+# get this so we can use it for upgrade:
 - name: Make sure aptitude is availabe for full upgrade
   apt: name=aptitude state=present
 
-#http://docs.ansible.com/ansible/apt_module.html
+# http://docs.ansible.com/ansible/apt_module.html
 - name: Full upgrade
   apt: upgrade=full
 
@@ -70,3 +70,4 @@
 #   - { regexp: '\"\$\{distro_id\}\:\$\{distro_codename\}-updates\"\;', line: '    "${distro_id}:${distro_codename}-updates";' }
 #   - { regexp: 'Unattended-Upgrade\:\:Remove-Unused-Dependencies',     line: 'Unattended-Upgrade::Remove-Unused-Dependencies \"true\";' }
 #   - { regexp: 'Unattended-Upgrade\:\:Automatic-Reboot \"',            line: 'Unattended-Upgrade::Automatic-Reboot \"true\";' }
+...

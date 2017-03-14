@@ -1,3 +1,4 @@
+---
 - name: Configure the firewall (ssh)
   ufw: rule=allow port=ssh
 
@@ -9,3 +10,4 @@
 
 - name: Enable the firewall
   ufw: state=enabled policy=deny
+...
