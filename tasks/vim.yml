@@ -1,7 +1,4 @@
 ---
-- name: Set VIM as default editor
-  file: src=/usr/bin/vim.basic dest=/etc/alternatives/editor state=link
-
 - name: Creating colors folder
   file: path=/etc/vim/colors state=directory
 
