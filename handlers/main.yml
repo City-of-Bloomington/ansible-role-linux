@@ -8,5 +8,5 @@
   command: dpkg-reconfigure --frontend noninteractive tzdata
 
 - name: linux_ssl_update_certs
-  command: update-ca-certificates
+  command: "update-ca-certificates -f"
 ...
