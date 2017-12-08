@@ -30,6 +30,7 @@
     - unzip
     - subversion
     - git
+    - rsync
     - ntp
     - man
     - open-vm-tools
