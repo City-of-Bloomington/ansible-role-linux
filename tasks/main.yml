@@ -34,6 +34,9 @@
     - ntp
     - man
     - open-vm-tools
+    - ncdu
+    - tmux
+    - screen
 
 - name: Setup Firewall
   import_tasks: firewall.yml
