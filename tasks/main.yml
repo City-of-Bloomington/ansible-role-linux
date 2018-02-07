@@ -50,6 +50,9 @@
 - name: Setup Nano
   import_tasks: nano.yml
 
+- name: Setup tmux
+  import_tasks: tmux.yml
+
 - name: Install SSL Certs
   import_tasks: ssl.yml
 
