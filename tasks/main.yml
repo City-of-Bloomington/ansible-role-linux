@@ -37,6 +37,9 @@
     - ncdu
     - tmux
     - screen
+    - software-properties-common
+    - apt-transport-https
+
 
 - name: Setup Firewall
   import_tasks: firewall.yml
