@@ -1,4 +1,0 @@
----
-- name: Add tmux config
-  copy: src=tmux/tmux.conf dest=/etc/tmux.conf
-...

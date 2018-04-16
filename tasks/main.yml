@@ -23,41 +23,24 @@
     state: present
   with_items:
     - ufw
-    - nano
-    - vim
-    - emacs
-    - zip
-    - unzip
-    - subversion
-    - git
     - rsync
     - ntp
-    - man
-    - open-vm-tools
-    - ncdu
-    - tmux
-    - screen
-    - software-properties-common
-    - apt-transport-https
+
+- name: "Install additional packages"
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ linux_packages }}"
 
 
 - name: Setup Firewall
-  import_tasks: firewall.yml
+  include_tasks: firewall.yml
 
 - name: Setup NTP
-  import_tasks: ntp.yml
-
-- name: Setup VIM
-  import_tasks: vim.yml
-
-- name: Setup Nano
-  import_tasks: nano.yml
-
-- name: Setup tmux
-  import_tasks: tmux.yml
+  include_tasks: ntp.yml
 
 - name: Install SSL Certs
-  import_tasks: ssl.yml
+  include_tasks: ssl.yml
 
 - name: Setup cron backup script
   copy: src=backup dest=/etc/cron.daily/backup force=no owner=root group=root mode=0755
