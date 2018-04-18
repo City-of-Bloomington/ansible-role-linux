@@ -26,6 +26,12 @@
     - rsync
     - ntp
 
+- name: "Install VMWare tools"
+  apt:
+    name: "open-vm-tools"
+    state: "present"
+  when: ansible_product_name is match("VMware")
+
 - name: "Install additional packages"
   apt:
     name: "{{ item }}"
