@@ -17,14 +17,15 @@
 - name: Full upgrade
   apt: upgrade=full
 
-- name: Install common packages
+- name: "Install common packages"
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - ufw
-    - rsync
-    - ntp
+    name: "{{ packages }}"
+    state: "present"
+  vars:
+    packages:
+      - "ufw"
+      - "rsync"
+      - "ntp"
 
 - name: "Install VMWare tools"
   apt:
@@ -34,9 +35,8 @@
 
 - name: "Install additional packages"
   apt:
-    name: "{{ item }}"
+    name: "{{ linux_packages }}"
     state: "present"
-  with_items: "{{ linux_packages }}"
 
 
 - name: Setup Firewall
