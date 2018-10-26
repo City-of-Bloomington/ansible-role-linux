@@ -54,6 +54,13 @@
 - name: Create cron backup directory
   file: path=/etc/cron.daily/backup.d state=directory owner=root group=root mode=0755
 
+- name: "Grant staff permission to srv directory"
+  file:
+    path:  "/srv"
+    state: "directory"
+    group: "staff"
+    mode:  "u=rwX,g=rwXs,o=rX"
+
 - name: Setup Unattended Upgrades
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" line="{{ item.line }}"
   with_items:
