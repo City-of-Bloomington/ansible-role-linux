@@ -1,1 +1,1 @@
-{{ ntp_timezone }}
+{{ linux_ntp.timezone }}

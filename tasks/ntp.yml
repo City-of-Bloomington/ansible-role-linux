@@ -4,23 +4,23 @@
     pkg: ntp
     state: present
 
-- name: Check current timezone
-  shell: grep -Fxq {{ ntp_timezone }} /etc/timezone | wc -l
-  register: current_tz
-  ignore_errors: True
+- name: "Check current timezone"
+  shell: "grep -Fxq {{ linux_ntp.timezone }} /etc/timezone | wc -l"
+  register: "current_tz"
+  ignore_errors: "yes"
 
 - name: Update local timezone
   template: src=timezone dest=/etc/timezone
   when: current_tz.stdout == '0'
   notify: linux_tzdata_reconfigure
 
-- name: Set NTP timezone
+- name: "Set NTP timezone"
   file:
-    src: '/usr/share/zoneinfo/{{ ntp_timezone }}'
-    dest: /etc/localtime
-    state: link
-    force: yes
-  register: ntp_tz
+    src: "/usr/share/zoneinfo/{{ linux_ntp.timezone }}"
+    dest: "/etc/localtime"
+    state: "link"
+    force: "yes"
+  register: "ntp_tz"
 
 - debug: msg="Schedule NTP restart"
   notify: linux_ntp_restart

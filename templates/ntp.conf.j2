@@ -9,17 +9,15 @@ filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
 # NTP Servers
-{% if ntp_servers %}
-{% for server in ntp_servers %}
+{% if linux_ntp.servers %}
+{% for server in linux_ntp.servers %}
 server {{ server }}
 {% endfor %}
 {% endif %}
 
 
 # Fallback NTP Server
-{% if ntp_fallback_server is defined %}
-server {{ ntp_fallback_server }}
-{% endif %}
+server pool.ntp.org
 
 # Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for
 # details.  The web page <http://support.ntp.org/bin/view/Support/AccessRestrictions>
@@ -33,13 +31,8 @@ server {{ ntp_fallback_server }}
 restrict -4 default kod notrap nomodify nopeer noquery
 restrict -6 default kod notrap nomodify nopeer noquery
 
-# Restrictions 
-
-{% if ntp_restrictions is defined %}
-{% for restrict in ntp_restrictions %}
-restrict {{ restrict }}
-{% endfor %}
-{% endif %}
+# Restrictions
+restrict 127.0.0.1
 
 
 
