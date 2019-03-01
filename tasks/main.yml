@@ -2,23 +2,21 @@
 - name: Add user to Staff
   user: name={{ ansible_user|default(lookup('env', 'USER'), True) }} groups=staff append=yes
 
-- name: "Full upgrade"
-  apt:
-    update_cache: "yes"
-    upgrade: "full"
-
-- name: Install aptitude
-  apt: name=aptitude state=present
-
 - name: "Install common packages"
   apt:
     name: "{{ packages }}"
     state: "present"
   vars:
     packages:
+      - "aptitude"
       - "ufw"
       - "rsync"
       - "ntp"
+
+- name: "Full upgrade"
+  apt:
+    update_cache: "yes"
+    upgrade: "full"
 
 - name: "Install VMWare tools"
   apt:
@@ -48,6 +46,12 @@
 
 - name: Create cron backup directory
   file: path=/etc/cron.daily/backup.d state=directory owner=root group=root mode=0755
+
+- name: "Create backup directory"
+  file:
+    path: "/srv/backups"
+    state: "directory"
+    group: "staff"
 
 - name: "Grant staff permission to srv directory"
   file:
