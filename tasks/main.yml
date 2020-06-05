@@ -12,6 +12,7 @@
       - "ufw"
       - "rsync"
       - "ntp"
+      - "language-pack-en"
 
 - name: "Full upgrade"
   apt:
