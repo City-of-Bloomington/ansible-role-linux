@@ -1,0 +1,35 @@
+---
+- name: 'Install RedHat packages'
+  dnf:
+    name: "{{ packages }}"
+    state: 'latest'
+  vars:
+    packages:
+      - 'chrony'
+      - 'dnf-automatic'
+      - 'firewalld'
+
+- name: "Full upgrade"
+  dnf:
+    name: '*'
+    state: 'latest'
+
+- name: "Install VMWare tools"
+  dnf:
+    name: "open-vm-tools"
+    state: "latest"
+  when: ansible_product_name is match("VMware")
+
+- name: 'Configure automatic updates'
+  community.general.ini_file:
+    path: '/etc/dnf/automatic.conf'
+    section: 'commands'
+    option:  'apply_updates'
+    value:   'yes'
+
+- name: 'Enable dnf-automatic'
+  ansible.builtin.systemd:
+    name: 'dnf-automatic.timer'
+    state: 'started'
+    enabled: 'yes'
+...

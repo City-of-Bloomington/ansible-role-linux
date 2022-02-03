@@ -1,0 +1,15 @@
+---
+- name: "Install custom SSL certs"
+  copy:
+    content: "{{ item.data }}"
+    dest: "/usr/share/pki/ca-trust-source/anchors/{{ item.filename }}"
+    force: "yes"
+  with_items: "{{ linux_ssl_certs }}"
+  no_log: "yes"
+  when: "linux_ssl_certs is defined"
+  register: 'ca_certs'
+
+- name: 'Update CA certs'
+  command: 'update-ca-trust extract'
+  when: 'ca_certs.changed'
+...

@@ -1,52 +1,35 @@
 ---
-- name: Add user to Staff
-  user: name={{ ansible_user|default(lookup('env', 'USER'), True) }} groups=staff append=yes
+- include_tasks: "{{ ansible_os_family }}/packages.yml"
+- include_tasks: "{{ ansible_os_family }}/firewall.yml"
+- include_tasks: "{{ ansible_os_family }}/ssl.yml"
 
-- name: "Install common packages"
-  apt:
+- name: 'Install additional packages'
+  ansible.builtin.package:
     name: "{{ packages }}"
-    state: "present"
+    state: 'present'
   vars:
     packages:
-      - "aptitude"
-      - "ufw"
-      - "rsync"
-      - "ntp"
-      - "language-pack-en"
+      - 'nano'
+      - 'emacs'
+      - 'zip'
+      - 'unzip'
+      - 'subversion'
+      - 'git'
 
-- name: "Full upgrade"
-  apt:
-    update_cache: "yes"
-    upgrade: "full"
+- name: 'Set timezone'
+  community.general.timezone:
+    name: "{{ linux_ntp.timezone }}"
 
-- name: "Install VMWare tools"
-  apt:
-    name: "open-vm-tools"
-    state: "present"
-  when: ansible_product_name is match("VMware")
+- name: 'Create Staff group'
+  group:
+    name: 'staff'
+    state: 'present'
 
-- name: "Install additional packages"
-  apt:
-    name: "{{ linux_packages }}"
-    state: "present"
-
-
-- name: Setup Firewall
-  include_tasks: firewall.yml
-
-- name: "Setup NTP"
-  include_tasks: "ntp.yml"
-  when: "linux_ntp is defined"
-
-- name: "Install SSL Certs"
-  include_tasks: "ssl.yml"
-  when: "linux_ssl_certs is defined"
-
-- name: Setup cron backup script
-  copy: src=backup dest=/etc/cron.daily/backup force=no owner=root group=root mode=0755
-
-- name: Create cron backup directory
-  file: path=/etc/cron.daily/backup.d state=directory owner=root group=root mode=0755
+- name: 'Add user to Staff'
+  user:
+    name: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"
+    groups: 'staff'
+    append: 'yes'
 
 - name: "Create backup directory"
   file:
@@ -60,13 +43,4 @@
     state: "directory"
     group: "staff"
     mode:  "u=rwX,g=rwXs,o=rX"
-
-- name: Setup Unattended Upgrades
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" line="{{ item.line }}"
-  with_items:
-  - { regexp: '\$\{distro_codename\}-updates\"\;', line: '    "${distro_id}:${distro_codename}-updates";'         }
-  - { regexp: 'InstallOnShutdown',                 line: 'Unattended-Upgrade::InstallOnShutdown "false";'         }
-  - { regexp: 'Remove-Unused-Dependencies',        line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";' }
-  - { regexp: 'Automatic-Reboot\s',                line: 'Unattended-Upgrade::Automatic-Reboot "true";'           }
-  - { regexp: 'Automatic-Reboot-Time',             line: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";'     }
 ...

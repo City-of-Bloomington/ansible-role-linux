@@ -1,0 +1,7 @@
+---
+- name: "Open the ssh port"
+  ansible.posix.firewalld:
+    service:   'ssh'
+    permanent: 'yes'
+    state:     'enabled'
+...
