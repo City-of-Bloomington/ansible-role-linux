@@ -4,13 +4,18 @@ galaxy_info:
   company:     'City of Bloomington, Indiana'
   issue_tracker_url: 'https://github.com/City-of-Bloomington/ansible-role-linux/issues'
   license: 'GPLv3'
-  min_ansible_version: 2.4
+  min_ansible_version: 2.9
   platforms:
+    - name: 'CentOS'
+      versions:
+        - '9'
+
     - name: 'Ubuntu'
       versions:
         - 'bionic'
         - 'focal'
   galaxy_tags:
+    - 'centos'
     - 'ubuntu'
     - 'system'
 

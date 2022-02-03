@@ -1,2 +1,0 @@
-#!/bin/bash
-/bin/run-parts /etc/cron.daily/backup.d

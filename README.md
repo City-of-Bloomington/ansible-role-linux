@@ -1,6 +1,6 @@
 City-of-Bloomington.linux
 =========
-Ansible role for common settings across Ubuntu servers
+Ansible role for common settings across Ubuntu or CentOS servers
 
 
 Example Playbook
@@ -15,6 +15,6 @@ Including an example of how to use your role (for instance, with variables passe
 
 Copying and License
 -------
-This material is copyright 2016-2017 City of Bloomington, Indiana
+This material is copyright 2016-2022 City of Bloomington, Indiana
 It is open and licensed under the GNU General Public License (GPL) v3.0 whose full text may be found at:
 https://www.gnu.org/licenses/gpl.txt
