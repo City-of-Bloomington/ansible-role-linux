@@ -6,6 +6,7 @@
   apt:
     name: "{{ packages }}"
     state: "present"
+    update_cache: "yes"
   vars:
     packages:
       - "aptitude"
@@ -64,9 +65,18 @@
 - name: Setup Unattended Upgrades
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" line="{{ item.line }}"
   with_items:
-  - { regexp: '\$\{distro_codename\}-updates\"\;', line: '    "${distro_id}:${distro_codename}-updates";'         }
-  - { regexp: 'InstallOnShutdown',                 line: 'Unattended-Upgrade::InstallOnShutdown "false";'         }
-  - { regexp: 'Remove-Unused-Dependencies',        line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";' }
-  - { regexp: 'Automatic-Reboot\s',                line: 'Unattended-Upgrade::Automatic-Reboot "true";'           }
-  - { regexp: 'Automatic-Reboot-Time',             line: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";'     }
+  - { regexp: '\$\{distro_codename\}-updates\"\;',
+      line: '"${distro_id}:${distro_codename}-updates";'}
+
+  - { regexp: 'InstallOnShutdown',
+      line: 'Unattended-Upgrade::InstallOnShutdown "{{ linux_unattended_upgrade.install_on_shutdown }}";'}
+
+  - { regexp: 'Remove-Unused-Dependencies',
+      line: 'Unattended-Upgrade::Remove-Unused-Dependencies "{{ linux_unattended_upgrade.remove_unused_dependencies }}";'}
+      
+  - { regexp: 'Automatic-Reboot\s',
+      line: 'Unattended-Upgrade::Automatic-Reboot "{{ linux_unattended_upgrade.automatic_reboot }}";'}
+      
+  - { regexp: 'Automatic-Reboot-Time',
+      line: 'Unattended-Upgrade::Automatic-Reboot-Time "{{ linux_unattended_upgrade.automatic_reboot_time }}";'}
 ...
