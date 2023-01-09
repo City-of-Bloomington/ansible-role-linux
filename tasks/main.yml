@@ -54,6 +54,7 @@
     path: "/srv/backups"
     state: "directory"
     group: "staff"
+    mode:  "u=rwX,g=rwXs,o=rX"
 
 - name: "Grant staff permission to srv directory"
   file:
@@ -61,6 +62,12 @@
     state: "directory"
     group: "staff"
     mode:  "u=rwX,g=rwXs,o=rX"
+
+- name: "Set umask"
+  lineinfile:
+    dest: "/etc/login.defs"
+    regexp: "^UMASK"
+    line: "UMASK           002"
 
 - name: Setup Unattended Upgrades
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" line="{{ item.line }}"
