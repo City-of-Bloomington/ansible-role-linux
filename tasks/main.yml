@@ -30,6 +30,7 @@
   apt:
     name: "{{ linux_packages }}"
     state: "present"
+  when: "linux_packages is defined"
 
 
 - name: Setup Firewall
@@ -86,4 +87,5 @@
       
   - { regexp: 'Automatic-Reboot-Time',
       line: 'Unattended-Upgrade::Automatic-Reboot-Time "{{ linux_unattended_upgrade.automatic_reboot_time }}";'}
+  when: "linux_unattended_upgrade is defined"
 ...
