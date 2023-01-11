@@ -30,6 +30,7 @@
   apt:
     name: "{{ linux_packages }}"
     state: "present"
+  when: "linux_packages is defined"
 
 
 - name: Setup Firewall
