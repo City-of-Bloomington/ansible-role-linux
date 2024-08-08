@@ -1,9 +1,6 @@
 ---
-- name: Add user to Staff
-  user: name={{ ansible_user|default(lookup('env', 'USER'), True) }} groups=staff append=yes
-
 - name: "Install common packages"
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: "present"
     update_cache: "yes"
@@ -16,25 +13,25 @@
       - "language-pack-en"
 
 - name: "Full upgrade"
-  apt:
+  ansible.builtin.apt:
     update_cache: "yes"
     upgrade: "full"
 
 - name: "Install VMWare tools"
-  apt:
+  ansible.builtin.apt:
     name: "open-vm-tools"
     state: "present"
   when: ansible_product_name is match("VMware")
 
 - name: "Install additional packages"
-  apt:
+  ansible.builtin.apt:
     name: "{{ linux_packages }}"
     state: "present"
   when: "linux_packages is defined"
 
 
-- name: Setup Firewall
-  include_tasks: firewall.yml
+- name: 'Setup Firewall'
+  include_tasks: 'firewall.yml'
 
 - name: "Setup NTP"
   include_tasks: "ntp.yml"
@@ -44,34 +41,48 @@
   include_tasks: "ssl.yml"
   when: "linux_ssl_certs is defined"
 
-- name: Setup cron backup script
-  copy: src=backup dest=/etc/cron.daily/backup force=no owner=root group=root mode=0755
+- name: 'Setup cron backup script'
+  ansible.builtin.copy:
+    src:   'backup'
+    dest:  '/etc/cron.daily/backup'
+    force: 'no'
+    owner: 'root'
+    group: 'root'
+    mode:  '0755'
 
-- name: Create cron backup directory
-  file: path=/etc/cron.daily/backup.d state=directory owner=root group=root mode=0755
+- name: 'Create cron backup directory'
+  ansible.builtin.file:
+    path:  '/etc/cron.daily/backup.d'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode:  '0755'
 
 - name: "Create backup directory"
-  file:
+  ansible.builtin.file:
     path: "/srv/backups"
     state: "directory"
     group: "staff"
     mode:  "u=rwX,g=rwXs,o=rX"
 
 - name: "Grant staff permission to srv directory"
-  file:
+  ansible.builtin.file:
     path:  "/srv"
     state: "directory"
     group: "staff"
     mode:  "u=rwX,g=rwXs,o=rX"
 
 - name: "Set umask"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "/etc/login.defs"
     regexp: "^UMASK"
     line: "UMASK           002"
 
-- name: Setup Unattended Upgrades
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" line="{{ item.line }}"
+- name: 'Setup Unattended Upgrades'
+  ansible.builtin.lineinfile:
+    dest: '/etc/apt/apt.conf.d/50unattended-upgrades'
+    regexp: "{{ item.regexp }}"
+    line:   "{{ item.line }}"
   with_items:
   - { regexp: '\$\{distro_codename\}-updates\"\;',
       line: '"${distro_id}:${distro_codename}-updates";'}
@@ -81,10 +92,10 @@
 
   - { regexp: 'Remove-Unused-Dependencies',
       line: 'Unattended-Upgrade::Remove-Unused-Dependencies "{{ linux_unattended_upgrade.remove_unused_dependencies }}";'}
-      
+
   - { regexp: 'Automatic-Reboot\s',
       line: 'Unattended-Upgrade::Automatic-Reboot "{{ linux_unattended_upgrade.automatic_reboot }}";'}
-      
+
   - { regexp: 'Automatic-Reboot-Time',
       line: 'Unattended-Upgrade::Automatic-Reboot-Time "{{ linux_unattended_upgrade.automatic_reboot_time }}";'}
   when: "linux_unattended_upgrade is defined"
