@@ -9,7 +9,6 @@
       - "aptitude"
       - "ufw"
       - "rsync"
-      - "ntp"
       - "language-pack-en"
 
 - name: "Full upgrade"
@@ -33,9 +32,9 @@
 - name: 'Setup Firewall'
   include_tasks: 'firewall.yml'
 
-- name: "Setup NTP"
-  include_tasks: "ntp.yml"
-  when: "linux_ntp is defined"
+- name: 'Set timezone'
+  community.general.timezone:
+    name: "{{ linux_ntp.timezone }}"
 
 - name: "Install SSL Certs"
   include_tasks: "ssl.yml"
