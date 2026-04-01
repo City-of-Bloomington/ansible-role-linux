@@ -20,7 +20,7 @@
   ansible.builtin.apt:
     name: "open-vm-tools"
     state: "present"
-  when: ansible_product_name is match("VMware")
+  when: ansible_facts['virtualization_type'] == "VMware"
 
 - name: "Install additional packages"
   ansible.builtin.apt:
