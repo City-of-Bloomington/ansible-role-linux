@@ -40,23 +40,6 @@
   include_tasks: "ssl.yml"
   when: "linux_ssl_certs is defined"
 
-- name: 'Setup cron backup script'
-  ansible.builtin.copy:
-    src:   'backup'
-    dest:  '/etc/cron.daily/backup'
-    force: 'no'
-    owner: 'root'
-    group: 'root'
-    mode:  '0755'
-
-- name: 'Create cron backup directory'
-  ansible.builtin.file:
-    path:  '/etc/cron.daily/backup.d'
-    state: 'directory'
-    owner: 'root'
-    group: 'root'
-    mode:  '0755'
-
 - name: "Create backup directory"
   ansible.builtin.file:
     path: "/srv/backups"
