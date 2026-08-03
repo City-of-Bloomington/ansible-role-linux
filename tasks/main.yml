@@ -40,6 +40,12 @@
   include_tasks: "ssl.yml"
   when: "linux_ssl_certs is defined"
 
+- name: 'Configure cron.daily time'
+  ansible.builtin.lineinfile:
+    path: '/etc/crontab'
+    search_string: 'cd / && run-parts --report /etc/cron.daily;'
+    line: '25 3    * * *   root    test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.daily; }'
+
 - name: "Create backup directory"
   ansible.builtin.file:
     path: "/srv/backups"
